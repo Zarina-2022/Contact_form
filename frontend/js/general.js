@@ -15,6 +15,10 @@ const contactForm = document.getElementById('contactForm')
 const emailError = document.getElementById('emailError')
 const messageError = document.getElementById('messageError')
 
+const responseContainer = document.getElementById('responseContainer')
+const submitBtn = document.getElementById('submitBtn')
+const responseText = document.getElementById('responseText')
+
 // INPUTS
 // nameInput = focusin/focusout
 nameInput.addEventListener('focusin', () => {
@@ -73,6 +77,11 @@ contactForm.addEventListener('submit', (event) => {
         message: messageArea.value,
         date: new Date()
     }
+    // Submit btn'e tiklayinca btn disable olacak cevap gelene kadar:
+    submitBtn.disabled = true
+    submitBtn.classList.replace('submitBtnActive', 'submitBtnDisabled')
+    submitBtn.innerHTML = 'Being sent...'
+    // istegi attigim yer burasi
     fetch("http://localhost:3004/add-form", {
         method: 'post',
         headers: {
@@ -81,12 +90,41 @@ contactForm.addEventListener('submit', (event) => {
         },
         body: JSON.stringify(newForm)
     })
+        // cevebi aldigim yer burasi:
         .then(res => res.json())
         .then(data => {
             console.log(data)
+            if (data.status === 200) {
+                responseContainer.style.display = 'block'
+                responseContainer.classList.add('responseSuccess')
+                responseText.innerText = 'Your form has been successfully submitted.'
+                setTimeout(() => {
+                    responseContainer.style.display = 'none'
+                    responseContainer.classList.remove('responseSuccess')
+                    responseText.innerText = ''
+                    submitBtn.disabled = false
+                    submitBtn.classList.replace('submitBtnDisabled', 'submitBtnActive')
+                    submitBtn.innerHTML = 'Send'
+                    nameInput.value = ''
+                    surnameInput.value = ''
+                    emailInput.value = ''
+                    messageArea.value = ''
+                }, 3000);
+            }
         })
         .catch(err => {
             console.log(err)
+            responseContainer.style.display = 'block'
+            responseContainer.classList.add('responseFail')
+            responseText.innerText = 'An error occurred while submitting your form.'
+            setTimeout(() => {
+                responseContainer.style.display = 'none'
+                responseContainer.classList.remove('responseSuccess')
+                responseText.innerText = ''
+                submitBtn.disabled = false
+                submitBtn.classList.replace('submitBtnDisabled', 'submitBtnActive')
+                submitBtn.innerHTML = 'Send'
+            }, 3000);
         })
 })
 
