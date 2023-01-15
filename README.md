@@ -14,7 +14,7 @@
 
 <h3>Preview:</h3>
 
-![](Forms.gif)
+![](forms.gif)
 
 Enjoy Coding ❤
 
