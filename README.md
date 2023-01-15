@@ -12,9 +12,9 @@
 
 <h3>It is a good example project.</h3>
 
-<h3>Preview:</h3>
+<h3>Screen preview:</h3>
 
-![](forms.gif)
+![](contact_form.gif)
 
 Enjoy Coding ❤
 
